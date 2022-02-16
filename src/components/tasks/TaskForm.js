@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import projectContext from '../../context/projects/projectContext';
 import taskContext from '../../context/tasks/taskContext';
 
@@ -10,7 +10,19 @@ const TaskForm = () => {
 
     // Obtener la funcion del agregar tarea
     const tasksContext = useContext(taskContext)
-    const { errortarea, agregarTarea, validarTarea, obtenerTareas } = tasksContext
+    const { tareaseleccionada, errortarea, agregarTarea, validarTarea, obtenerTareas, actualizarTarea, limpiarTarea } = tasksContext
+
+    // Effect que detecta si hay una tarea seleccionada
+    useEffect(() => {
+        if(tareaseleccionada !== null) {
+            setTask(tareaseleccionada)
+        } else {
+            setTask({
+                nombre: '',
+            })
+        }
+    }, [tareaseleccionada])
+    
 
     // State del formulario
     const [ task, setTask ] = useState({
@@ -43,14 +55,17 @@ const TaskForm = () => {
             return
         }
 
-        // pasar la validación
-
-
-        // agregar la nueva tarea al state de tareas
-        task.proyectoId = proyectoActual.id
-        task.estado = false
-        agregarTarea(task);
-
+        // Si es edición o si es nueva tarea
+        if(tareaseleccionada === null) {
+            // agregar la nueva tarea al state de tareas
+            task.proyectoId = proyectoActual.id
+            task.estado = false
+            agregarTarea(task);
+        } else {
+            // Actualizar tarea existente
+            actualizarTarea(task)
+            limpiarTarea()
+        }
         // Volver a llamar la funcion de obtener las tareas
         obtenerTareas(proyectoActual.id)
         
@@ -81,7 +96,7 @@ const TaskForm = () => {
                 <input 
                     type='submit'
                     className='btn btn-primario btn-submit btn-block'
-                    value='Agregar Tarea'
+                    value={tareaseleccionada ? 'Editar Tarea' : 'Agregar Tarea'}
                 />
             </div>
         </form>

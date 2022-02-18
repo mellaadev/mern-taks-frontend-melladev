@@ -1,12 +1,30 @@
-import React, { useState, useContext } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState, useContext, useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import AlertaContext from '../../context/alertas/alertaContext';
+import AuthContext from '../../context/autenticacion/authContext';
  
-const NewAccount = () => {
+const NewAccount = (props) => {
+
+  let history = useNavigate()
 
   // Extraer los valores del context
   const alertaContext = useContext(AlertaContext);
   const { alerta, mostrarAlerta } = alertaContext; 
+
+  const authContext = useContext(AuthContext);
+  const { mensaje, autenticado, registrarUsuario } = authContext;
+
+  // En caso de que el usuario se haya autenticado o registrado o se un registro duplicado
+  useEffect(() => {
+    if(autenticado) {
+      history('/projects')
+    }
+
+    if(mensaje) {
+      mostrarAlerta(mensaje.msg, mensaje.categoria);
+    }
+  }, [mensaje, autenticado, history])
+  
 
   // State para iniciar sesión
   const [ usuario, setUsuario ] = useState({
@@ -45,7 +63,11 @@ const NewAccount = () => {
     }
 
     // Pasarlo al action que es la función declarada en el reducer
-    
+    registrarUsuario({
+      nombre,
+      email,
+      password,
+    })
 
   }
 

@@ -7,19 +7,22 @@ import Projects from './components/projects/Projects';
 import ProjectState from './context/projects/projectState'
 import TaskState from './context/tasks/taskState';
 import AlertaState from './context/alertas/alertaState';
+import AuthState from './context/autenticacion/authState';
 
 function App() {
   return (
     <ProjectState>
       <TaskState>
         <AlertaState>
-          <Router>
-            <Routes>
-              <Route path="/" element={<Login />} />
-              <Route path="/new-account" element={<NewAccount />} />
-              <Route path="/projects" element={<Projects />} />
-            </Routes>
-          </Router>
+          <AuthState>
+            <Router>
+              <Routes>
+                <Route path="/" element={<Login />} />
+                <Route path="/new-account" element={<NewAccount />} />
+                <Route path="/projects" element={<Projects />} />
+              </Routes>
+            </Router>
+          </AuthState>
         </AlertaState>
       </TaskState>
     </ProjectState>

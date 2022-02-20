@@ -9,6 +9,7 @@ import {
 
 export default (state, action) => {
     switch (action.type) {
+        case LOGIN_EXITOSO:
         case REGISTRO_EXISTOSO:
             localStorage.setItem('token', action.payload.token);
             return {

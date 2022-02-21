@@ -22,7 +22,7 @@ const TasksList = () => {
 
     // Eliminar un proyecto
     const handleEliminarProyecto = () => {
-        eliminarProyecto(proyectoActual.id)
+        eliminarProyecto(proyectoActual._id)
     }
 
   return (

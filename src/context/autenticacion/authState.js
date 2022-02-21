@@ -22,6 +22,7 @@ const AuthState = props => {
         autenticado: null,
         usuario: null,
         mensaje: null,
+        cargando: true,
     }
 
     const [ state, dispatch ] = useReducer(AuthReducer, initialState);
@@ -101,6 +102,13 @@ const AuthState = props => {
         }
     }
 
+    // Cierra la sesión del usuario
+    const cerrarSesion = () => {
+        dispatch({
+            type: CERRAR_SESION
+        })
+    }
+
     return(
         <AuthContext.Provider
             value={{
@@ -108,8 +116,11 @@ const AuthState = props => {
                 autenticado: state.autenticado,
                 usuario: state.usuario,
                 mensaje: state.mensaje,
+                cargando: state.cargando,
                 registrarUsuario,
-                iniciarSesion
+                iniciarSesion,
+                usuarioAutenticado,
+                cerrarSesion
             }}
         >
             {props.children}

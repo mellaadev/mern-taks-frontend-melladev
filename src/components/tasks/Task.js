@@ -10,7 +10,7 @@ const Task = ({ tarea }) => {
 
     // Obtener la funcion del context de tarea
     const tasksContext = useContext(taskContext)
-    const { eliminarTarea, obtenerTareas, cambiarEstadoTarea, guardarTareaActual } = tasksContext
+    const { eliminarTarea, obtenerTareas, actualizarTarea, guardarTareaActual } = tasksContext
 
     // Aplicar destructuring al proyecto
     const [ proyectoActual ] = proyecto
@@ -20,8 +20,8 @@ const Task = ({ tarea }) => {
         const confirmar = window.confirm(`¿Estás seguro de que quieres eliminar la tarea?\n\nTarea: ${tarea.nombre}`)
 
         if(confirmar) {
-            eliminarTarea(id)
-            obtenerTareas(proyectoActual.id)
+            eliminarTarea(id, proyectoActual._id)
+            obtenerTareas(proyectoActual._id)
         }
     }
 
@@ -32,7 +32,7 @@ const Task = ({ tarea }) => {
         } else {
             tarea.estado = true
         }
-        cambiarEstadoTarea(tarea);
+        actualizarTarea(tarea);
     }
 
     // Función que va a recoger la tarea actual
@@ -75,7 +75,7 @@ const Task = ({ tarea }) => {
             <button
                 type='button'
                 className='btn btn-secundario'
-                onClick={() => handleEliminarTarea(tarea.id)}
+                onClick={() => handleEliminarTarea(tarea._id)}
             >Eliminar</button>
         </div>
     </li>
